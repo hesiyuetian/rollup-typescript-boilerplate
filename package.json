@@ -1,0 +1,43 @@
+{
+  "name": "rollup-typescript-boilerplate",
+  "version": "1.0.0",
+  "description": "A basic TypeScript project built using Rollup.js",
+  "main": "dist/index.cjs.js",
+  "types": "dist/index.d.ts",
+  "module": "dist/index.es.js",
+  "browser": "dist/index.js",
+  "scripts": {
+    "build": "rollup -c",
+    "lint": "eslint --fix 'src/**/*.ts'",
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/peng-huang-cc/rollup-typescript-boilerplate.git"
+  },
+  "keywords": [
+    "typescript",
+    "rollup"
+  ],
+  "author": "hesiyuetian",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/peng-huang-cc/rollup-typescript-boilerplate/issues"
+  },
+  "homepage": "https://github.com/peng-huang-cc/rollup-typescript-boilerplate#readme",
+  "devDependencies": {
+    "@babel/core": "^7.16.0",
+    "@babel/preset-env": "^7.16.0",
+    "@babel/preset-typescript": "^7.16.0",
+    "@rollup/plugin-babel": "^5.3.0",
+    "@rollup/plugin-commonjs": "^21.0.1",
+    "@rollup/plugin-node-resolve": "^13.0.6",
+    "@rollup/plugin-typescript": "^8.3.0",
+    "rimraf": "^3.0.2",
+    "rollup": "^2.59.0",
+    "rollup-plugin-terser": "^7.0.2",
+    "rollup-plugin-typescript": "^1.0.1",
+    "tslib": "^2.3.1",
+    "typescript": "^4.4.4"
+  }
+}
