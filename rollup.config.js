@@ -3,11 +3,15 @@ import commonjs from "@rollup/plugin-commonjs";
 import resolve from "@rollup/plugin-node-resolve";
 import { babel } from "@rollup/plugin-babel";
 import { terser } from "rollup-plugin-terser";
+import json from '@rollup/plugin-json';
+import builtins from 'rollup-plugin-node-builtins';
 import path from "path";
 import pkg from "./package.json";
 
 const moduleName = pkg.name.replace(/^@.*\//, "");
-const inputFileName = "src/index.ts";
+// const inputFileName = "src/index.ts";
+const inputFileName = "src/ChainApi.js";
+// const inputFileName = "src/Web3Util.js";
 
 const banner = `
   /**
@@ -17,6 +21,39 @@ const banner = `
    * Released under the ${pkg.license} license.
    */
 `;
+
+// export default [{
+//   input: './src/ChainApi.js',
+//   output: {
+//     file: './dist/index.js',
+//     format: 'umd',
+//     name: 'squidgameJssdk',
+//     globals: {
+//       web3: 'web3',
+//       WalletConnect: 'WalletConnect',
+//     },
+//     intro: 'const global = window;'
+//   },
+//   externals: ["web3", "WalletConnect"],
+//
+//   runtimeHelpers: false,
+//   plugins: [
+//     babel({
+//       exclude: 'node_modules/**'
+//     }),
+//     resolve({
+//       preferBuiltins: true,
+//       mainFields: ['browser']
+//     }),
+//     terser(),
+//     json(),
+//     builtins(),
+//     commonjs({
+//       include: ['node_modules/**'],
+//       sourceMap: false
+//     }),
+//   ],
+// }]
 
 export default [
   {
@@ -36,17 +73,26 @@ export default [
         plugins: [terser()],
       },
     ],
+    runtimeHelpers: false,
     plugins: [
-      typescript({
-        tsconfig: path.resolve(__dirname, "tsconfig.json"),
+      commonjs({
+        include: ['node_modules/**'],
+        sourceMap: false
       }),
-      resolve({ extensions: [".js", ".ts"] }),
-      commonjs(),
+      json(),
+      builtins(),
+      terser(),
       babel({
+        exclude: 'node_modules/**',
         babelHelpers: "bundled",
         configFile: path.resolve(__dirname, ".babelrc"),
       }),
-      terser(),
+      resolve({
+        preferBuiltins: true,
+        mainFields: ['browser'],
+        browser: true,
+      }),
+
     ],
   },
 
@@ -61,18 +107,20 @@ export default [
         banner,
       },
     ],
-    external: [
-      ...Object.keys(pkg.dependencies || {}),
-      ...Object.keys(pkg.devDependencies || {}),
-    ],
+    // external: [
+    //   ...Object.keys(pkg.dependencies || {}),
+    //   ...Object.keys(pkg.devDependencies || {}),
+    // ],
     plugins: [
       typescript({
         tsconfig: path.resolve(__dirname, "tsconfig.json"),
       }),
+      terser(),
       commonjs({
         extensions: [".js", ".ts"],
       }),
       babel({
+        // exclude: 'node_modules/**',
         babelHelpers: "bundled",
         configFile: path.resolve(__dirname, ".babelrc"),
       }),
@@ -83,32 +131,33 @@ export default [
   },
 
   // CommonJS
-  {
-    input: inputFileName,
-    output: [
-      {
-        file: pkg.main,
-        format: "cjs",
-        sourcemap: "inline",
-        banner,
-      },
-    ],
-    external: [
-      ...Object.keys(pkg.dependencies || {}),
-      ...Object.keys(pkg.devDependencies || {}),
-    ],
-    plugins: [
-      typescript(),
-      commonjs({
-        extensions: [".js", ".ts"],
-      }),
-      babel({
-        babelHelpers: "bundled",
-        configFile: path.resolve(__dirname, ".babelrc"),
-      }),
-      resolve({
-        browser: false,
-      }),
-    ],
-  },
+  // {
+  //   input: inputFileName,
+  //   output: [
+  //     {
+  //       file: pkg.main,
+  //       format: "cjs",
+  //       sourcemap: "inline",
+  //       banner,
+  //     },
+  //   ],
+  //   external: [
+  //     ...Object.keys(pkg.dependencies || {}),
+  //     ...Object.keys(pkg.devDependencies || {}),
+  //   ],
+  //   plugins: [
+  //     typescript(),
+  //     terser(),
+  //     commonjs({
+  //       extensions: [".js", ".ts"],
+  //     }),
+  //     babel({
+  //       babelHelpers: "bundled",
+  //       configFile: path.resolve(__dirname, ".babelrc"),
+  //     }),
+  //     resolve({
+  //       browser: false,
+  //     }),
+  //   ],
+  // },
 ];
