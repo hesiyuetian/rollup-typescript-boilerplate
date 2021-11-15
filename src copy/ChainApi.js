@@ -28,6 +28,7 @@ const newGameTicket2 = (address) => {
     if(!_gameTicket2) {
         _gameTicket2 = new GameTicket2(chainWeb3, address)
     }
+    
     return _gameTicket2;
 }
 
